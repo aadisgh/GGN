@@ -46,6 +46,11 @@ export const trackingData = pgTable("tracking_data", {
   status: text("status").notNull(),
   location: text("location").notNull(),
   lastUpdate: timestamp("last_update").defaultNow(),
+  senderName: text("sender_name"),
+  receiverName: text("receiver_name"),
+  packageWeight: text("package_weight"),
+  serviceType: text("service_type"),
+  estimatedDelivery: text("estimated_delivery"),
 });
 
 export const insertUserSchema = createInsertSchema(users).pick({
@@ -71,6 +76,12 @@ export const insertQuoteSchema = createInsertSchema(quoteRequests).omit({
 export const insertTrackingSchema = createInsertSchema(trackingData).omit({
   id: true,
   lastUpdate: true,
+}).extend({
+  senderName: z.string().nullable().optional(),
+  receiverName: z.string().nullable().optional(),
+  packageWeight: z.string().nullable().optional(),
+  serviceType: z.string().nullable().optional(),
+  estimatedDelivery: z.string().nullable().optional(),
 });
 
 export type InsertUser = z.infer<typeof insertUserSchema>;

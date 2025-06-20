@@ -81,39 +81,58 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ error: "Tracking number not found" });
       }
 
-      // Mock timeline data for demonstration
-      const timeline = [
-        {
-          status: "Package Received",
-          location: "Gurgaon Sorting Facility",
-          time: "2024-01-15 10:30 AM",
-          completed: true
-        },
-        {
-          status: "In Transit",
-          location: tracking.location,
-          time: "2024-01-15 02:45 PM",
-          completed: true
-        },
-        {
-          status: "Out for Delivery",
-          location: "Mumbai Delivery Center",
-          time: tracking.status === "Delivered" ? "2024-01-16 09:15 AM" : "Expected: 2024-01-16 09:15 AM",
-          completed: tracking.status === "Delivered"
-        },
-        {
-          status: "Delivered",
-          location: "Destination Address",
-          time: tracking.status === "Delivered" ? "2024-01-16 06:00 PM" : "Expected: 2024-01-16 06:00 PM",
-          completed: tracking.status === "Delivered"
+      // Generate timeline based on current status
+      const generateTimeline = (currentStatus: string) => {
+        const baseTimeline = [
+          {
+            status: "Package Received",
+            location: "Gurgaon Sorting Facility",
+            time: "2024-12-19 10:30 AM",
+            completed: true
+          },
+          {
+            status: "In Transit",
+            location: tracking.location,
+            time: "2024-12-19 02:45 PM",
+            completed: ["In Transit", "Out for Delivery", "Delivered"].includes(currentStatus)
+          },
+          {
+            status: "Out for Delivery",
+            location: currentStatus === "Out for Delivery" ? tracking.location : "Local Delivery Center",
+            time: currentStatus === "Delivered" ? "2024-12-20 09:15 AM" : currentStatus === "Out for Delivery" ? "Today 09:15 AM" : "Expected: Today",
+            completed: ["Out for Delivery", "Delivered"].includes(currentStatus)
+          },
+          {
+            status: "Delivered",
+            location: "Destination Address",
+            time: currentStatus === "Delivered" ? "2024-12-20 06:00 PM" : `Expected: ${tracking.estimatedDelivery || 'Tomorrow'}`,
+            completed: currentStatus === "Delivered"
+          }
+        ];
+        
+        // If package is just received, show only first step as completed
+        if (currentStatus === "Package Received") {
+          return baseTimeline.map((item, index) => ({
+            ...item,
+            completed: index === 0
+          }));
         }
-      ];
+        
+        return baseTimeline;
+      };
+
+      const timeline = generateTimeline(tracking.status);
 
       res.json({ 
         trackingNumber,
         status: tracking.status,
         location: tracking.location,
         lastUpdate: tracking.lastUpdate,
+        senderName: tracking.senderName,
+        receiverName: tracking.receiverName,
+        packageWeight: tracking.packageWeight,
+        serviceType: tracking.serviceType,
+        estimatedDelivery: tracking.estimatedDelivery,
         timeline
       });
     } catch (error) {

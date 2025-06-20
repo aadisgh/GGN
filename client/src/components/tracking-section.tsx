@@ -17,6 +17,11 @@ type TrackingData = {
   status: string;
   location: string;
   lastUpdate: string;
+  senderName?: string;
+  receiverName?: string;
+  packageWeight?: string;
+  serviceType?: string;
+  estimatedDelivery?: string;
   timeline: Array<{
     status: string;
     location: string;
@@ -113,7 +118,7 @@ export default function TrackingSection() {
                       <FormLabel className="text-gray-700 font-semibold">Tracking Number</FormLabel>
                       <FormControl>
                         <Input 
-                          placeholder="Enter your tracking number (e.g., UOC123456789)" 
+                          placeholder="Enter your tracking number" 
                           className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 focus:outline-none transition-colors"
                           {...field} 
                         />
@@ -142,6 +147,22 @@ export default function TrackingSection() {
                 </Button>
               </form>
             </Form>
+            
+            {/* Sample Tracking Numbers */}
+            <div className="mt-6 p-4 bg-blue-50 rounded-xl">
+              <h4 className="text-sm font-semibold text-gray-700 mb-2">Try these sample tracking numbers:</h4>
+              <div className="flex flex-wrap gap-2">
+                {["UOC123456789", "6861417", "6861380", "UOC987654321", "TRK001234567"].map((trackingNumber) => (
+                  <button
+                    key={trackingNumber}
+                    onClick={() => form.setValue("trackingNumber", trackingNumber)}
+                    className="px-3 py-1 bg-white border border-blue-200 rounded-lg text-sm text-blue-600 hover:bg-blue-50 transition-colors"
+                  >
+                    {trackingNumber}
+                  </button>
+                ))}
+              </div>
+            </div>
           </motion.div>
           
           {/* Tracking Results */}
@@ -157,17 +178,60 @@ export default function TrackingSection() {
                 
                 <div className="space-y-6">
                   {/* Package Info */}
-                  <div className="border-b border-gray-200 pb-4">
-                    <div className="grid md:grid-cols-2 gap-4">
+                  <div className="border-b border-gray-200 pb-6">
+                    <div className="grid md:grid-cols-2 gap-4 mb-4">
                       <div>
                         <span className="font-semibold text-gray-700">Tracking Number:</span>
-                        <span className="ml-2 text-gray-600">{trackingData.trackingNumber}</span>
+                        <span className="ml-2 text-gray-600 font-mono">{trackingData.trackingNumber}</span>
                       </div>
                       <div>
                         <span className="font-semibold text-gray-700">Status:</span>
-                        <span className="ml-2 px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
+                        <span className={`ml-2 px-3 py-1 rounded-full text-sm font-medium ${
+                          trackingData.status === 'Delivered' ? 'bg-green-100 text-green-800' :
+                          trackingData.status === 'Out for Delivery' ? 'bg-orange-100 text-orange-800' :
+                          trackingData.status === 'In Transit' ? 'bg-blue-100 text-blue-800' :
+                          'bg-gray-100 text-gray-800'
+                        }`}>
                           {trackingData.status}
                         </span>
+                      </div>
+                    </div>
+                    
+                    {/* Additional Package Details */}
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
+                      {trackingData.senderName && (
+                        <div>
+                          <span className="font-semibold text-gray-700">Sender:</span>
+                          <span className="ml-2 text-gray-600">{trackingData.senderName}</span>
+                        </div>
+                      )}
+                      {trackingData.receiverName && (
+                        <div>
+                          <span className="font-semibold text-gray-700">Receiver:</span>
+                          <span className="ml-2 text-gray-600">{trackingData.receiverName}</span>
+                        </div>
+                      )}
+                      {trackingData.packageWeight && (
+                        <div>
+                          <span className="font-semibold text-gray-700">Weight:</span>
+                          <span className="ml-2 text-gray-600">{trackingData.packageWeight}</span>
+                        </div>
+                      )}
+                      {trackingData.serviceType && (
+                        <div>
+                          <span className="font-semibold text-gray-700">Service Type:</span>
+                          <span className="ml-2 text-gray-600">{trackingData.serviceType}</span>
+                        </div>
+                      )}
+                      {trackingData.estimatedDelivery && (
+                        <div>
+                          <span className="font-semibold text-gray-700">Est. Delivery:</span>
+                          <span className="ml-2 text-gray-600">{trackingData.estimatedDelivery}</span>
+                        </div>
+                      )}
+                      <div>
+                        <span className="font-semibold text-gray-700">Current Location:</span>
+                        <span className="ml-2 text-gray-600">{trackingData.location}</span>
                       </div>
                     </div>
                   </div>

@@ -48,14 +48,72 @@ export class MemStorage implements IStorage {
   }
 
   private initializeMockData() {
-    const mockTracking: TrackingData = {
-      id: 1,
-      trackingNumber: "UOC123456789",
-      status: "In Transit",
-      location: "Delhi Hub",
-      lastUpdate: new Date(),
-    };
-    this.tracking.set("UOC123456789", mockTracking);
+    const mockTrackingData = [
+      {
+        id: 1,
+        trackingNumber: "UOC123456789",
+        status: "In Transit",
+        location: "Delhi Hub",
+        lastUpdate: new Date(),
+        senderName: "Rajesh Kumar",
+        receiverName: "Priya Sharma",
+        packageWeight: "2.5 kg",
+        serviceType: "Express Delivery",
+        estimatedDelivery: "2024-12-22",
+      },
+      {
+        id: 2,
+        trackingNumber: "6861417",
+        status: "Out for Delivery",
+        location: "Mumbai Delivery Center",
+        lastUpdate: new Date(),
+        senderName: "Amit Patel",
+        receiverName: "Sunita Verma",
+        packageWeight: "1.2 kg",
+        serviceType: "Standard Delivery",
+        estimatedDelivery: "2024-12-21",
+      },
+      {
+        id: 3,
+        trackingNumber: "6861380",
+        status: "Delivered",
+        location: "Destination Address",
+        lastUpdate: new Date(),
+        senderName: "Global Exports Ltd",
+        receiverName: "Tech Solutions Inc",
+        packageWeight: "5.0 kg",
+        serviceType: "International Delivery",
+        estimatedDelivery: "2024-12-20",
+      },
+      {
+        id: 4,
+        trackingNumber: "UOC987654321",
+        status: "Package Received",
+        location: "Gurgaon Sorting Facility",
+        lastUpdate: new Date(),
+        senderName: "E-Commerce Plus",
+        receiverName: "Neha Singh",
+        packageWeight: "0.8 kg",
+        serviceType: "Same Day Delivery",
+        estimatedDelivery: "2024-12-21",
+      },
+      {
+        id: 5,
+        trackingNumber: "TRK001234567",
+        status: "In Transit",
+        location: "Bangalore Hub",
+        lastUpdate: new Date(),
+        senderName: "TechnoSoft Solutions",
+        receiverName: "Digital Marketing Co",
+        packageWeight: "3.2 kg",
+        serviceType: "Express Delivery",
+        estimatedDelivery: "2024-12-23",
+      }
+    ];
+
+    mockTrackingData.forEach(data => {
+      this.tracking.set(data.trackingNumber, data);
+    });
   }
 
   async getUser(id: number): Promise<User | undefined> {
@@ -91,7 +149,8 @@ export class MemStorage implements IStorage {
     const pickup: PickupRequest = { 
       ...insertPickup, 
       id, 
-      createdAt: new Date() 
+      createdAt: new Date(),
+      instructions: insertPickup.instructions || null
     };
     this.pickups.set(id, pickup);
     return pickup;
@@ -102,7 +161,8 @@ export class MemStorage implements IStorage {
     const quote: QuoteRequest = { 
       ...insertQuote, 
       id, 
-      createdAt: new Date() 
+      createdAt: new Date(),
+      estimatedCost: insertQuote.estimatedCost || null
     };
     this.quotes.set(id, quote);
     return quote;
@@ -117,7 +177,12 @@ export class MemStorage implements IStorage {
     const tracking: TrackingData = { 
       ...insertTracking, 
       id, 
-      lastUpdate: new Date() 
+      lastUpdate: new Date(),
+      senderName: insertTracking.senderName || null,
+      receiverName: insertTracking.receiverName || null,
+      packageWeight: insertTracking.packageWeight || null,
+      serviceType: insertTracking.serviceType || null,
+      estimatedDelivery: insertTracking.estimatedDelivery || null
     };
     this.tracking.set(insertTracking.trackingNumber, tracking);
     return tracking;
