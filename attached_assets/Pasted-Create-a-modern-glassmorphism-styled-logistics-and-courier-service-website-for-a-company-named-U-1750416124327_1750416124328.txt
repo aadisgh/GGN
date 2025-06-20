@@ -1,0 +1,92 @@
+Create a modern, glassmorphism-styled logistics and courier service website for a company named **"United Overseas Couriers GGN"**, based in Gurgaon, India.
+
+The design should include:
+- Cool blur backgrounds (glassmorphism style)
+- Smooth animations for UI components (GSAP, Framer Motion, or CSS)
+- Fully mobile responsive
+- Color Theme: White, Blue gradients, subtle neon highlights
+
+---
+
+### 🔧 Key Pages and Sections:
+
+1. **🏠 Home Page:**
+   - Hero section with background animation, slogan: “Delivering Trust Across Borders”
+   - Animated CTA buttons like “Track Shipment” / “Get Quote”
+   - Highlights of your USPs (fast delivery, tracking, support)
+
+2. **📦 Track Shipment Page:**
+   - Tracking input box with animated search button
+   - When a user enters tracking number, fetch real-time data from:
+     `http://www.unitedcouriers.biz/Track.aspx`
+   - Display full tracking details with timeline UI
+   - Add loading animation when fetching data
+   - If there's no API, simulate server-side scraping or form automation
+
+3. **🛠️ Services Page:**
+   - Cards or icon blocks for:
+     - Domestic Courier
+     - International Courier
+     - Air Cargo / Freight Forwarding
+     - Warehouse / Third-Party Logistics
+     - Bulk & Business Logistics
+   - Animated hover effects
+
+4. **🧾 Get a Quote Page:**
+   - Form with: Pickup City, Delivery City, Package Weight, Service Type
+   - Optionally calculate estimated price using dummy rates
+
+5. **🧑‍💼 About Us Page:**
+   - Company background
+   - Mission & Vision
+   - Coverage area
+   - Timeline animation for company milestones
+
+6. **🧭 Contact Us Page (Get in Touch):**
+   - Address:
+     Shankar Chowk Road, Near Indian Overseas Bank, Dundahera, Gurgaon - 122016
+   - Phone: 0124-2439847, 2439877, 2397770, 2438177
+   - Emails:
+     uocgurgaon@gmail.com, uocpl@rediffmail.com, uocgurgaon@zohomail.in
+   - Embedded Google Map
+   - Contact form with animation
+
+7. **🗣️ Testimonials Page:**
+   - Carousel slider with fade-in quotes from clients
+   - Profile photo + review + rating
+
+8. **📚 FAQs Page:**
+   - Accordion list with animation
+
+9. **📦 Request Pickup Page:**
+   - Form for customer to request courier pickup
+   - Fields: Name, Phone, Address, Package Size, Date, etc.
+
+10. **👨‍💼 Login / Client Dashboard:**
+    - Customers can view past shipments
+    - Optionally allow tracking via login panel
+
+---
+
+### 💡 Additional Features to Include:
+- Animated counters for parcels delivered, clients served, etc.
+- WhatsApp/Live chat widget
+- Email/SMS notification feature for tracking status
+- Language selector (Hindi/English)
+- Admin panel to manage tracking status
+- Blog for logistics tips, news, and updates
+
+---
+
+### 🧪 Tech Stack Suggested:
+- Frontend: HTML5, CSS3, JavaScript (or React.js / Next.js)
+- Animations: GSAP / Framer Motion / AOS.js
+- Backend: Node.js / PHP for tracking scraping or API integration
+- Forms: Integrated with SMTP or Formspree for contact messages
+- SEO Optimized, fast loading with lazy load
+
+---
+
+**Project Name: United Overseas Couriers GGN**
+
+**Final Output Goal:** A beautiful, fast, mobile-first logistics website with full tracking integration, animation, and customer forms.
