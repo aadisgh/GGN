@@ -15,6 +15,8 @@ import {
   type TrackingData,
   type InsertTracking
 } from "@shared/schema";
+import { db } from "./db";
+import { eq } from "drizzle-orm";
 
 export interface IStorage {
   getUser(id: number): Promise<User | undefined>;
@@ -25,6 +27,63 @@ export interface IStorage {
   createQuoteRequest(quote: InsertQuote): Promise<QuoteRequest>;
   getTrackingData(trackingNumber: string): Promise<TrackingData | undefined>;
   createTrackingData(tracking: InsertTracking): Promise<TrackingData>;
+}
+
+export class DatabaseStorage implements IStorage {
+  async getUser(id: number): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.id, id));
+    return user || undefined;
+  }
+
+  async getUserByUsername(username: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.username, username));
+    return user || undefined;
+  }
+
+  async createUser(insertUser: InsertUser): Promise<User> {
+    const [user] = await db
+      .insert(users)
+      .values(insertUser)
+      .returning();
+    return user;
+  }
+
+  async createContactSubmission(insertContact: InsertContact): Promise<ContactSubmission> {
+    const [contact] = await db
+      .insert(contactSubmissions)
+      .values(insertContact)
+      .returning();
+    return contact;
+  }
+
+  async createPickupRequest(insertPickup: InsertPickup): Promise<PickupRequest> {
+    const [pickup] = await db
+      .insert(pickupRequests)
+      .values(insertPickup)
+      .returning();
+    return pickup;
+  }
+
+  async createQuoteRequest(insertQuote: InsertQuote): Promise<QuoteRequest> {
+    const [quote] = await db
+      .insert(quoteRequests)
+      .values(insertQuote)
+      .returning();
+    return quote;
+  }
+
+  async getTrackingData(trackingNumber: string): Promise<TrackingData | undefined> {
+    const [tracking] = await db.select().from(trackingData).where(eq(trackingData.trackingNumber, trackingNumber));
+    return tracking || undefined;
+  }
+
+  async createTrackingData(insertTracking: InsertTracking): Promise<TrackingData> {
+    const [tracking] = await db
+      .insert(trackingData)
+      .values(insertTracking)
+      .returning();
+    return tracking;
+  }
 }
 
 export class MemStorage implements IStorage {
@@ -189,4 +248,4 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new MemStorage();
+export const storage = new DatabaseStorage();

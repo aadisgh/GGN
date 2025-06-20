@@ -24,9 +24,9 @@ This is a full-stack courier service web application for "United Overseas Courie
 - **Development**: tsx for TypeScript execution in development
 
 ### Data Storage Solutions
-- **Primary Database**: PostgreSQL (configured for Neon serverless)
+- **Primary Database**: PostgreSQL (configured for Neon serverless) - ACTIVE
 - **Session Storage**: PostgreSQL table-based sessions
-- **Development Fallback**: In-memory storage implementation for development
+- **Development Fallback**: In-memory storage implementation (replaced by database)
 
 ## Key Components
 
@@ -99,6 +99,9 @@ Located in `shared/schema.ts`:
 ## Changelog
 ```
 Changelog:
+- December 20, 2024. Migrated from in-memory storage to PostgreSQL database
+- December 20, 2024. Enhanced tracking system with comprehensive package details
+- December 20, 2024. Added database seeding with realistic tracking data
 - June 20, 2025. Initial setup
 ```
 
